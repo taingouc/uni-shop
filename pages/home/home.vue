@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<!-- 顶部搜索栏 -->
+		<view class="search-box">
+			<search @click="gotoSearch"></search>
+		</view>
 		<!-- 轮播图区域 -->
 		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
 			<!-- 循环渲染轮播图的 item 项 -->
@@ -22,8 +26,11 @@
 </template>
 
 <script>
-	import floor from '@/components/floor/floor.vue'
+	// 导入自己封装的 mixin 模块
+	import badgeMix from '@/mixins/tabbar-badge.js'
 	export default {
+		// 将 badgeMix 混入到当前的页面中进行使用
+		mixins: [badgeMix],
 		data() {
 			return {
 				// 轮播图数据
@@ -71,10 +78,13 @@
 						url: '/pages/cate/cate'
 					})
 				}
+			},
+			// 点击搜索栏跳转
+			gotoSearch() {
+				uni.navigateTo({
+					url: "/subpkg/goods_search/goods_search"
+				})
 			}
-		},
-		components: {
-			floor
 		},
 		onLoad() {
 			this.getSwiperList()
@@ -104,5 +114,11 @@
 			width: 128rpx;
 			height: 140rpx;
 		}
+	}
+
+	.search-box {
+		position: sticky;
+		top: 0;
+		z-index: 999;
 	}
 </style>

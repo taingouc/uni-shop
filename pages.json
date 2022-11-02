@@ -12,7 +12,8 @@
 	}, {
 		"path": "pages/cart/cart",
 		"style": {
-			"enablePullDownRefresh": false
+			"enablePullDownRefresh": false,
+			"navigationBarTitleText": "购物车"
 		}
 	}, {
 		"path": "pages/my/my",
@@ -29,20 +30,35 @@
 				"enablePullDownRefresh": false
 			}
 
-		}    ,{
-                    "path" : "goods_list/goods_list",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+		}, {
+			"path": "goods_list/goods_list",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 150,
+				"backgroundColor": "#ffffff",
+				"backgroundTextStyle": "dark"
+			}
+
+		}, {
+			"path": "goods_search/goods_search",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "goods_payment/goods_payment",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"enablePullDownRefresh": false
+			}
+
+		}]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "黑马优购",
+		"navigationBarTitleText": "小柯商城",
 		"navigationBarBackgroundColor": "#C00000",
 		"backgroundColor": "#FFFFFF"
 	},
@@ -74,4 +90,5 @@
 			}
 		]
 	}
+
 }
