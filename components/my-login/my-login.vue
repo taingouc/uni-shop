@@ -26,7 +26,6 @@
 					success: (res) => {
 						// 获取用户信息成功， res.userInfo 就是用户的基本信息,将用户的基本信息存储到 vuex 中
 						this.updateUserInfo(res.userInfo)
-						console.log(res.userInfo);
 						// 获取登录成功后的 Token 字符串
 						this.getToken(res)
 					},
@@ -55,6 +54,17 @@
 					if (this.redirectInfo && this.redirectInfo.openType === 'switchTab') {
 						// 调用小程序提供的 uni.switchTab() API 进行页面的导航
 						uni.switchTab({
+							// 要导航到的页面地址
+							url: this.redirectInfo.from,
+							// 导航成功之后，把 vuex 中的 redirectInfo 对象重置为 null
+							complete: () => {
+								this.updateRedirectInfo(null)
+							}
+						})
+					}
+					if (this.redirectInfo && this.redirectInfo.openType === 'navigateTo') {
+						// 调用小程序提供的 uni.navigateTo() API 进行页面的导航
+						uni.navigateTo({
 							// 要导航到的页面地址
 							url: this.redirectInfo.from,
 							// 导航成功之后，把 vuex 中的 redirectInfo 对象重置为 null

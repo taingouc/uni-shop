@@ -10,7 +10,7 @@ export default {
 		token: uni.getStorageSync('token') || '',
 		// 用户的基本信息
 		userinfo: JSON.parse(uni.getStorageSync('userinfo') || '{}'),
-		// 点击结算按钮跳转至登录页，记录当前页面信息,登录成功后跳转回来 object 对象 { openType, from }
+		// 点击结算按钮或订单支付按钮跳转至登录页，记录当前页面信息,登录成功后跳转回来 object 对象 { openType, from }
 		redirectInfo: null
 	}),
 

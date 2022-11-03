@@ -9,7 +9,9 @@ export default {
 		// { goods_id, goods_name, goods_price, goods_count, goods_small_logo, goods_state }
 		cart: JSON.parse(uni.getStorageSync('cart') || '[]'),
 		// 订单编号
-		orderNumber: uni.getStorageSync('orderNumer') || ''
+		orderNumber: uni.getStorageSync('orderNumer') || '',
+		// 立即购买时存储商品信息
+		goodsInfo: []
 	}),
 
 	// 模块的 mutations 方法
@@ -47,13 +49,19 @@ export default {
 		},
 		// 修改购物车商品数量
 		updateGoodsCount(state, goods) {
-			// 根据 goods_id 查询购物车中对应商品的信息对象
-			const findResult = state.cart.find(x => x.goods_id === goods.goods_id)
-			if (findResult) {
-				// 更新对应商品的数量
-				findResult.goods_count = goods.goods_count
-				// 持久化存储到本地
-				this.commit('m_cart/saveToStorage')
+			// 如果goods.redirectUrl存在或者goods.redirectUrl.url== 'cart'说明这是在购物车页面或者购物车结算页面
+			if (!goods.redirectUrl || goods.redirectUrl.url == 'cart') {
+				// 根据 goods_id 查询购物车中对应商品的信息对象
+				const findResult = state.cart.find(x => x.goods_id === goods.goods_id)
+				if (findResult) {
+					// 更新对应商品的数量
+					findResult.goods_count = goods.goods_count
+					// 持久化存储到本地
+					this.commit('m_cart/saveToStorage')
+				}
+			} else {
+				// 点击立即购买进入的订单详情页面
+				state.goodsInfo[0].goods_count = goods.goods_count
 			}
 		},
 		// 根据 Id 从购物车中删除对应的商品信息
@@ -81,6 +89,14 @@ export default {
 		// 将购物车中的数据持久化存储到本地
 		saveToStorageByGoodsNumber(state) {
 			uni.setStorageSync('orderNumer', state.orderNumber)
+		},
+		// 保存立即购买商品的信息
+		saveGoodsInfo(state, goodsInfo) {
+			state.goodsInfo = [goodsInfo]
+		},
+		// 清空立即购买商品的信息
+		deleteGoodsInfo(state) {
+			state.goodsInfo = []
 		}
 	},
 

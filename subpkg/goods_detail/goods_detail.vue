@@ -74,7 +74,7 @@
 		},
 		methods: {
 			// 把 m_cart 模块中的 addToCart 方法映射到当前页面使用
-			...mapMutations('m_cart', ['addToCart']),
+			...mapMutations('m_cart', ['addToCart', 'saveGoodsInfo']),
 			// 定义请求商品详情数据的方法
 			async getGoodsDetail(goods_id) {
 				const { data: res } = await uni.$http.get('/api/public/v1/goods/detail', { goods_id })
@@ -109,19 +109,25 @@
 			},
 			// 右侧按钮组点击事件
 			buttonClick(e) {
+				// 创建一个商品的信息对象
+				const goods = {
+					goods_id: this.goods_info.goods_id, // 商品的Id
+					goods_name: this.goods_info.goods_name, // 商品的名称
+					goods_price: this.goods_info.goods_price, // 商品的价格
+					goods_count: 1, // 商品的数量
+					goods_small_logo: this.goods_info.goods_small_logo, // 商品的图片
+					goods_state: true // 商品的勾选状态
+				}
 				if (e.content.text === '加入购物车') {
-					// 创建一个商品的信息对象
-					const goods = {
-						goods_id: this.goods_info.goods_id, // 商品的Id
-						goods_name: this.goods_info.goods_name, // 商品的名称
-						goods_price: this.goods_info.goods_price, // 商品的价格
-						goods_count: 1, // 商品的数量
-						goods_small_logo: this.goods_info.goods_small_logo, // 商品的图片
-						goods_state: true // 商品的勾选状态
-					}
 					// 通过 this 调用映射过来的 addToCart 方法，把商品信息对象存储到购物车中
 					this.addToCart(goods)
 					uni.$showMsg('添加成功！')
+				}
+				if (e.content.text === '立即购买') {
+					this.saveGoodsInfo(goods)
+					uni.navigateTo({
+						url: '/subpkg/goods_payment/goods_payment'
+					})
 				}
 			}
 		},

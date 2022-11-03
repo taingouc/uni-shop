@@ -98,7 +98,8 @@
 				this.saveOrderNumber(orderNumber)
 				// 跳转至订单详情页
 				uni.navigateTo({
-					url: '/subpkg/goods_payment/goods_payment'
+					// 通过页面传参url=cart判断是点击结算还是立即购买进入的订单详情页
+					url: '/subpkg/goods_payment/goods_payment?url=cart'
 				})
 			},
 			// 随机生成18位不重复的订单编号，length 随机后缀字符长度，默认为4

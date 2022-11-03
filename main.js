@@ -4,6 +4,8 @@ import App from './App'
 import { $http } from '@escook/request-miniprogram'
 // 导入 store 的实例对象
 import store from './store/index.js'
+
+
 // 挂载到全局uni上
 uni.$http = $http
 // 封装的展示消息提示的方法

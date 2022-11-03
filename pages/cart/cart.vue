@@ -26,7 +26,7 @@
 			<text class="tip-text">空空如也~</text>
 		</view>
 		<!-- 结算区域 -->
-		<my-settle></my-settle>
+		<my-settle v-if="cart.length!==0"></my-settle>
 	</view>
 </template>
 

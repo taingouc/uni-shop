@@ -11,11 +11,18 @@ export default {
 	},
 	methods: {
 		setBadge() {
-			// 调用 uni.setTabBarBadge() 方法，为购物车设置右上角的徽标
+			// 如果total为0，隐藏 购物车右上角的红点。
+			if (this.total == 0) {
+				return uni.hideTabBarRedDot({
+					index: 2
+				})
+			}
+			// 不为0则调用 uni.setTabBarBadge() 方法，为购物车设置右上角的徽标
 			uni.setTabBarBadge({
 				index: 2,
-				text: this.total + '', // 注意：text 的值必须是字符串，不能是数字
+				text: this.total + '' // 注意：text 的值必须是字符串，不能是数字
 			})
+
 		},
 	},
 	watch: {
