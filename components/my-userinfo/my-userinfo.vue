@@ -38,11 +38,11 @@
 				<!-- 面板的主体 -->
 				<view class="panel-body">
 					<!-- 面板主体中的 item 项 -->
-					<view class="panel-item">
+					<view class="panel-item" @click="gotoGoodsCollection">
 						<image src="/static/my-icons/icon1.png" class="icon"></image>
-						<text>待付款</text>
+						<text>已收藏</text>
 					</view>
-					<view class="panel-item">
+					<view class="panel-item" @click="gotoReceipt('awit')">
 						<image src="/static/my-icons/icon2.png" class="icon"></image>
 						<text>待收货</text>
 					</view>
@@ -50,7 +50,7 @@
 						<image src="/static/my-icons/icon3.png" class="icon"></image>
 						<text>退款/退货</text>
 					</view>
-					<view class="panel-item">
+					<view class="panel-item" @click="gotoReceipt('all')">
 						<image src="/static/my-icons/icon4.png" class="icon"></image>
 						<text>全部订单</text>
 					</view>
@@ -102,6 +102,18 @@
 					this.updateToken('')
 					this.updateAddress({})
 				}
+			},
+			// 跳转至待收货页面
+			gotoReceipt(url) {
+				uni.navigateTo({
+					url: "/subpkg/goods_receipt/goods_receipt?url="+url
+				})
+			},
+			// 点击收藏按钮跳转页面
+			gotoGoodsCollection() {
+				uni.navigateTo({
+					url: '/subpkg/goods_collection/goods_collection'
+				})
 			}
 		},
 		computed: {

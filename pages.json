@@ -54,6 +54,20 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "goods_receipt/goods_receipt",
+			"style": {
+				"navigationBarTitleText": "待收货",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "goods_collection/goods_collection",
+			"style": {
+				"navigationBarTitleText": "商品收藏",
+				"enablePullDownRefresh": false
+			}
+
 		}]
 	}],
 	"globalStyle": {

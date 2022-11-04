@@ -17,6 +17,15 @@
 				<!-- 商品数量 -->
 				<uni-number-box :min="1" v-if="showNumber" :value="goodsInfo.goods_count" @change="numChangeHandler">
 				</uni-number-box>
+				<view class="goods_info" v-if="!showNumber&&goodsInfo.goods_count">
+					<view class="goods_price">
+						<text>￥</text>
+						<text>{{goodsInfo.goods_price*goodsInfo.goods_count |tofixed}}</text>
+					</view>
+					<view class="goods_number">
+						<text>x{{goodsInfo.goods_count}}</text>
+					</view>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -130,6 +139,37 @@
 			.goods-price {
 				font-size: 16px;
 				color: #c00000;
+			}
+		}
+	}
+
+	.goods_info {
+		width: 100px;
+		height: 50px;
+		color: black;
+		position: absolute;
+		left: 270px;
+		top: 60px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: flex-end;
+
+		view {
+			&:nth-child(1) {
+				color: #242424;
+
+				text {
+					&:nth-child(1) {
+						font-size: 12px;
+					}
+				}
+			}
+
+			&:nth-child(2) {
+				color: #ccc;
+				font-size: 16px;
 			}
 		}
 	}

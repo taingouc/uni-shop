@@ -57,7 +57,7 @@
 			}
 		},
 		methods: {
-			...mapMutations('m_cart', ['updateGoodsCount', 'removeGoodsById', 'deleteGoodsInfo']),
+			...mapMutations('m_cart', ['updateGoodsCount', 'removeGoodsById', 'deleteGoodsInfo', 'saveGoodsPayment']),
 			...mapMutations('m_user', ['updateRedirectInfo']),
 			// 商品增减
 			numberChangeHandler(e) {
@@ -137,6 +137,14 @@
 							duration: 1500
 						})
 						this.passwordArr = []
+						// 创建一个支付订单的信息，包括订单编号，订单中的商品
+						const goodsPayment = {
+							orderNumber: this.orderNumber,
+							orderGoods: this.orderGoods,
+							orderPrice: this.goodsPrices
+						}
+						// 将支付订单存储到本地
+						this.saveGoodsPayment(goodsPayment)
 						// 删除购物车结算商品信息
 						this.orderGoods.forEach(goods => {
 							this.removeGoodsById(goods.goods_id)
@@ -144,6 +152,12 @@
 						// 删除立即购买商品信息
 						this.deleteGoodsInfo()
 					}, 500)
+					setTimeout(() => {
+						// 跳转至待收货界面
+						uni.navigateTo({
+							url: "/subpkg/goods_receipt/goods_receipt"
+						})
+					}, 1000)
 				}
 			},
 			// 点击删除密码事件

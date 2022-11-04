@@ -21,26 +21,19 @@
 				</view>
 			</view>
 			<!-- 运费 -->
-			<view class="yf">快递：免运费 -- {{cart.length}}</view>
+			<view class="yf">快递：免运费 </view>
 		</view>
 		<!-- 商品详情信息 -->
 		<rich-text :nodes="goods_info.goods_introduce"></rich-text>
 		<!-- 商品导航组件 -->
 		<view class="goods_nav">
-			<!-- fill 控制右侧按钮的样式 -->
-			<!-- options 左侧按钮的配置项 -->
-			<!-- buttonGroup 右侧按钮的配置项 -->
-			<!-- click 左侧按钮的点击事件处理函数 -->
-			<!-- buttonClick 右侧按钮的点击事件处理函数 -->
-			<uni-goods-nav :fill="true" :options="options" :buttonGroup="buttonGroup" @click="onClick"
-				@buttonClick="buttonClick" />
+			<my-goodsNav :goods_info="goods_info"></my-goodsNav>
 		</view>
 	</view>
 </template>
 
 <script>
-	// 从 vuex 中按需导出 mapState 辅助方法
-	import { mapState, mapMutations, mapGetters } from 'vuex'
+	
 	export default {
 		data() {
 			return {
@@ -48,33 +41,10 @@
 				goods_info: {
 					type: Object,
 					default: {}
-				},
-				// 左侧按钮组的配置对象
-				options: [{
-					icon: 'shop',
-					text: '店铺'
-				}, {
-					icon: 'cart',
-					text: '购物车',
-					info: 2
-				}],
-				// 右侧按钮组的配置对象
-				buttonGroup: [{
-						text: '加入购物车',
-						backgroundColor: '#ff0000',
-						color: '#fff'
-					},
-					{
-						text: '立即购买',
-						backgroundColor: '#ffa200',
-						color: '#fff'
-					}
-				]
+				}
 			}
 		},
 		methods: {
-			// 把 m_cart 模块中的 addToCart 方法映射到当前页面使用
-			...mapMutations('m_cart', ['addToCart', 'saveGoodsInfo']),
 			// 定义请求商品详情数据的方法
 			async getGoodsDetail(goods_id) {
 				const { data: res } = await uni.$http.get('/api/public/v1/goods/detail', { goods_id })
@@ -97,62 +67,14 @@
 					// 所有图片 url 地址的数组
 					urls: this.goods_info.pics.map(x => x.pics_big)
 				})
-			},
-			// 左侧点击事件
-			onClick(e) {
-				// 点击购物车跳转到购物车页面
-				if (e.content.text === '购物车') {
-					uni.switchTab({
-						url: "/pages/cart/cart"
-					})
-				}
-			},
-			// 右侧按钮组点击事件
-			buttonClick(e) {
-				// 创建一个商品的信息对象
-				const goods = {
-					goods_id: this.goods_info.goods_id, // 商品的Id
-					goods_name: this.goods_info.goods_name, // 商品的名称
-					goods_price: this.goods_info.goods_price, // 商品的价格
-					goods_count: 1, // 商品的数量
-					goods_small_logo: this.goods_info.goods_small_logo, // 商品的图片
-					goods_state: true // 商品的勾选状态
-				}
-				if (e.content.text === '加入购物车') {
-					// 通过 this 调用映射过来的 addToCart 方法，把商品信息对象存储到购物车中
-					this.addToCart(goods)
-					uni.$showMsg('添加成功！')
-				}
-				if (e.content.text === '立即购买') {
-					this.saveGoodsInfo(goods)
-					uni.navigateTo({
-						url: '/subpkg/goods_payment/goods_payment'
-					})
-				}
 			}
-		},
+			},
 		onLoad(options) {
 			// 获取商品 Id
 			const goods_id = options.goods_id
 			// 调用请求商品详情数据的方法
 			this.getGoodsDetail(goods_id)
-		},
-		computed: {
-			// 调用 mapState 方法，把 m_cart 模块中的 cart 数组映射到当前页面中，作为计算属性来使用
-			// ...mapState('模块的名称', ['要映射的数据名称1', '要映射的数据名称2'])
-			...mapState('m_cart', ['cart']),
-			// 把 m_cart 模块中名称为 total 的 getter 映射到当前页面中使用
-			...mapGetters('m_cart', ['total'])
-		},
-		watch: {
-			// 通过 watch 侦听器，监听计算属性 total 值的变化，从而动态为购物车按钮的徽标赋值
-			total: {
-				handler(newVal) {
-					this.options[1].info = newVal
-				},
-				immediate: true
-			}
-		},
+		}
 	}
 </script>
 

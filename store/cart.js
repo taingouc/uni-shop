@@ -11,7 +11,11 @@ export default {
 		// 订单编号
 		orderNumber: uni.getStorageSync('orderNumer') || '',
 		// 立即购买时存储商品信息
-		goodsInfo: []
+		goodsInfo: [],
+		// 存放所有已支付的商品
+		goodsPayment: JSON.parse(uni.getStorageSync('goodsPayment') || '[]'),
+		// 存放所有已收藏商品
+		goodsCollection: JSON.parse(uni.getStorageSync('goodsCollection') || '[]')
 	}),
 
 	// 模块的 mutations 方法
@@ -97,6 +101,31 @@ export default {
 		// 清空立即购买商品的信息
 		deleteGoodsInfo(state) {
 			state.goodsInfo = []
+		},
+		// 将已支付的订单信息保存到state.goodsPayment中
+		saveGoodsPayment(state, goodsPayment) {
+			state.goodsPayment.push(goodsPayment)
+			// 提交到本地
+			this.commit('m_cart/saveGoodsPaymentStorge')
+		},
+		// 提交已支付的订单信息持久化存储到本地
+		saveGoodsPaymentStorge(state) {
+			uni.setStorageSync('goodsPayment', JSON.stringify(state.goodsPayment))
+		},
+		// 提交收藏商品
+		saveGoodsCollection(state, goodsCollection) {
+			state.goodsCollection.push(goodsCollection)
+			// 提交收藏的商品持久性存储到本地
+			this.commit('m_cart/saveGoodsCollectionStorge')
+		},
+		// 删除收藏商品
+		removeGoodsCollection(state, goodsCollection) {
+			state.goodsCollection = state.goodsCollection.filter(goods => goods.goods_id !== goodsCollection.goods_id)
+			this.commit('m_cart/saveGoodsCollectionStorge')
+		},
+		// 把收藏的商品持久性存储到本地
+		saveGoodsCollectionStorge(state) {
+			uni.setStorageSync('goodsCollection', JSON.stringify(state.goodsCollection))
 		}
 	},
 
